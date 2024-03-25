@@ -167,7 +167,7 @@ function App() {
   //create link
   const handleShare = () => {
     setSharelink(
-      `https://mltdwn23.github.io/videolink/${encodeURIComponent(
+      `https://mltdwn23.github.io/videolink/#/${encodeURIComponent(
         themeBM
       )}/${encodeURIComponent(reactorUrl)}/${encodeURIComponent(
         reactorStart
