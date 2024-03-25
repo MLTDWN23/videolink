@@ -9,7 +9,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <HashRouter>
       <Routes>
         <Route
-          path="/:colorWay?/:reactUrl?/:reactStart?/:talUrl?/:talStart?/:playPause?"
+          path="/videolink/:colorWay?/:reactUrl?/:reactStart?/:talUrl?/:talStart?/:playPause?"
           element={<App />}
         />
       </Routes>
