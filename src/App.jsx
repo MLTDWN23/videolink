@@ -656,7 +656,7 @@ function App() {
                       name="reactorStart"
                       id="reactorStart"
                       className={`block flex-1 border-0 bg-transparent py-1.5 pl-1 ${theme.textColor} placeholder:text-gray-500 focus:ring-0 sm:text-sm sm:leading-6`}
-                      placeholder="0:20"
+                      placeholder="0:00"
                       onChange={handleReactorStart}
                     />
                   </div>
