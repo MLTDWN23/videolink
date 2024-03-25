@@ -6,13 +6,13 @@ import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route
-          path="/videolink/:colorWay?/:reactUrl?/:reactStart?/:talUrl?/:talStart?/:playPause?"
+          path="/:colorWay?/:reactUrl?/:reactStart?/:talUrl?/:talStart?/:playPause?"
           element={<App />}
         />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>
 );
