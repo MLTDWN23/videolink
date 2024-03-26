@@ -338,6 +338,7 @@ function App() {
 
   const BBAB = ['38', '40', '37', '39', '66', '66', '65', '66'];
   const easterEgg = () => {
+    setIgnoreParams(true);
     handleBBAB();
     setThemeBM(true);
     playerRef.current.player.player.mute();
@@ -353,16 +354,16 @@ function App() {
   const DOKI = ['68', '79', '75', '73'];
 
   const HandleDoki = () => {
-    setReactorUrl('https://www.youtube.com/watch?v=6YmLiQmoYeY');
+    setIgnoreParams(true);
+    setReactorUrl('https://www.youtube.com/watch?v=sx6f0uiUOvA');
     setTalentUrl('https://www.youtube.com/watch?v=10V4-xxYZS4');
 
     setThemeBM(true);
     playerRef.current.player.player.mute();
-    setReactorStart('0:13');
-    setContentStart('0:01');
+    setReactorStart('0:10');
 
     setIsReady(false);
-    setIsContentReady(false);
+
     setTimeout(() => {
       handlePlayBoth();
     }, '1500');
@@ -376,6 +377,7 @@ function App() {
   const MEGITSUNE = ['77', '69', '71', '73', '84', '83', '85', '78', '69'];
 
   const handelMegitsune = () => {
+    setIgnoreParams(true);
     setReactorUrl('https://www.youtube.com/watch?v=RorkQ79V-68');
     setTalentUrl('https://www.youtube.com/watch?v=RorkQ79V-68');
     setThemeBM(true);
@@ -394,6 +396,7 @@ function App() {
   const OTFGK = ['79', '84', '70', '71', '75'];
 
   const handelOtfgk = () => {
+    setIgnoreParams(true);
     setReactorUrl('https://www.dailymotion.com/video/x7vu9gy');
     setTalentUrl('https://www.dailymotion.com/video/x7vu9gy');
     setThemeBM(true);
