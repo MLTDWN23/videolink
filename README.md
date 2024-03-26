@@ -2,9 +2,9 @@
 
 ## INPUT FIELDS
 
-Reactor Url and Content URL can be Youtube, Vimeo, Dailymotion, Twitch
+Reactor URL and Content URL can be Youtube, Vimeo, Dailymotion, Twitch
 
-Start recator video from M:SS if you want to skip intro (enter the time as you see it in the video eg, 2:30 or 12:15)
+Start the reactor video from M:SS if you want to skip the intro (enter the time as you see it in the video eg, 2:30 or 12:15)
 
 Start content when reactor video time is at M:SS (Reactor hits play on content video)
 
@@ -18,12 +18,11 @@ Pause and Resume fields/data can be removed by using the minus button
 
 Note keeps times in sequential order
 
-Once you have input the required info. (Reqiured Fields. Reactor Url, Content Url and Start Content)
+Once you have input the required info. (Required Fields. Reactor Url, Content Url and Start Content)
 
-Click the "Create a Shareable Link" this wil give you a link with all the setting you entered and can be shared with other
+Click the "Create a Shareable Link" This will give you a link with all the settings you entered and can be shared with other
 
-## CODES
-
-There are sevreal codes
+CODES
+There are several codes
 
 BM will toggle the theme (outside of input fields)
