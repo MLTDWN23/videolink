@@ -7,8 +7,11 @@ import { useKonami } from 'react-konami-code';
 import { motion } from 'framer-motion';
 import './app.css';
 import logo from './assets/logo.png';
+import dokiLogo from './assets/dokilogo.png';
 import cross from './assets/deathCross.png';
+import imageOtfgk from './assets/otfgk.png';
 import deathMp from './assets/deathshort.aac';
+import otfgkMp from './assets/otfgk.aac';
 
 function App() {
   const playerRef = useRef();
@@ -49,6 +52,13 @@ function App() {
 
   const [themeBM, setThemeBM] = useState();
 
+  //Motion state
+  const [showCard, setShowCard] = useState(false);
+  const [motionInitial, setMotionInitial] = useState();
+  const [motionInView, setMotionInView] = useState();
+  const [motionAnimate, setMotionAnimate] = useState();
+  const [motionTransition, setMotionTransition] = useState();
+
   //setThemeBM(false);
 
   const [theme, setTheme] = useState({
@@ -64,6 +74,7 @@ function App() {
     errorText: 'text-red-600',
     svgFill: 'fill-red-500',
     bgImage: '',
+    visibility: '',
   });
 
   const regNum = /^\d+:\d{2,2}$/;
@@ -90,15 +101,8 @@ function App() {
       talStart != undefined &&
       res != undefined
     ) {
-      if (colorWay === 'true') {
-        setThemeBM(true);
-      } else if (colorWay === 'theone') {
-        setThemeBM('theone');
-      } else {
-        setThemeBM(false);
-      }
-
       setReactorUrl(decodeURIComponent(reactUrl));
+      setThemeBM(decodeURIComponent(colorWay));
       setReactorStart(decodeURIComponent(reactStart));
       setTalentUrl(decodeURIComponent(talUrl));
       setTalentStart(decodeURIComponent(talStart));
@@ -271,58 +275,106 @@ function App() {
   //theme
 
   const handleTheme = () => {
-    if (themeBM === true) {
-      setTheme({
-        backgroundColor: 'bg-black',
-        contentBackgroundColor: 'bg-black/[.7] ',
-        buttonBG: 'bg-black',
-        buttonBorder: 'border-2 border-bmRed',
-        buttonHover: 'hover:bg-red-700',
-        buttonOutline: 'focus-visible:outline-red-800',
-        buttonText: 'text-bmRed hover:text-black',
-        inputFocus: 'focus-within:ring-red-600',
-        textColor: 'text-red-600',
-        errorText: 'text-blue-600',
-        svgFill: '',
-        bgImage: 'bg-smoke bg-cover bg-center  bg-no-repeat  ',
-      });
-    } else if (themeBM === 'theone') {
-      setTheme({
-        backgroundColor: 'bg-black',
-        contentBackgroundColor: 'bg-black/[.7] ',
-        buttonBG: 'bg-black',
-        buttonBorder: 'border-2 border-amber-200',
-        buttonHover: 'hover:bg-amber-200',
-        buttonOutline: 'focus-visible:outline-amber-700',
-        buttonText: 'text-amber hover:text-black',
-        inputFocus: 'focus-within:ring-amber-500',
-        textColor: 'text-amber-500',
-        errorText: 'text-blue-600',
-        svgFill: '',
-        bgImage: 'bg-theOne bg-cover bg-center  bg-no-repeat  ',
-      });
-    } else {
-      setTheme({
-        backgroundColor: 'bg-slate-950',
-        contentBackgroundColor: '',
-        buttonBG: 'bg-green-800',
-        buttonBorder: '',
-        buttonHover: 'hover:bg-green-700',
-        buttonOutline: 'focus-visible:outline-green-800',
-        buttonText: 'text-white',
-        inputFocus: 'focus-within:ring-indigo-600',
-        textColor: 'text-white',
-        errorText: 'text-red-600',
-        svgFill: 'fill-red-500',
-        bgImage: '',
-      });
+    switch (themeBM) {
+      case 'bm':
+        setTheme({
+          logoImage: logo,
+          backgroundColor: 'bg-black',
+          contentBackgroundColor: 'bg-black/[.7] ',
+          buttonBG: 'bg-black',
+          buttonBorder: 'border-2 border-bmRed',
+          buttonHover: 'hover:bg-red-700',
+          buttonOutline: 'focus-visible:outline-red-800',
+          buttonText: 'text-bmRed hover:text-black',
+          inputFocus: 'focus-within:ring-red-600',
+          textColor: 'text-red-600',
+          errorText: 'text-blue-600',
+          svgFill: '',
+          bgImage: 'bg-smoke bg-cover bg-center  bg-no-repeat  ',
+          visibility: '',
+        });
+        break;
+      case 'otfgk':
+        setTheme({
+          logoImage: logo,
+          backgroundColor: 'bg-black',
+          contentBackgroundColor: 'bg-black ',
+          buttonBG: 'bg-black',
+          buttonBorder: 'border-2 border-bmRed',
+          buttonHover: 'hover:bg-red-700',
+          buttonOutline: 'focus-visible:outline-red-800',
+          buttonText: 'text-bmRed hover:text-black',
+          inputFocus: 'focus-within:ring-red-600',
+          textColor: 'text-red-600',
+          errorText: 'text-blue-600',
+          svgFill: '',
+          bgImage: 'bg-otfgkBG bg-cover bg-center  bg-no-repeat  ',
+          visibility: '',
+        });
+        break;
+      case 'theone':
+        setTheme({
+          logoImage: logo,
+          backgroundColor: 'bg-black',
+          contentBackgroundColor: 'bg-black/[.7] ',
+          buttonBG: 'bg-black',
+          buttonBorder: 'border-2 border-amber-200',
+          buttonHover: 'hover:bg-amber-200',
+          buttonOutline: 'focus-visible:outline-amber-700',
+          buttonText: 'text-amber hover:text-black',
+          inputFocus: 'focus-within:ring-amber-500',
+          textColor: 'text-amber-500',
+          errorText: 'text-blue-600',
+          svgFill: '',
+          bgImage: 'bg-theOne bg-cover bg-center  bg-no-repeat  ',
+          visibility: '',
+        });
+        break;
+      case 'doki':
+        setTheme({
+          logoImage: dokiLogo,
+          backgroundColor: 'bg-black',
+          contentBackgroundColor: 'bg-black/[.7] ',
+          buttonBG: 'bg-black',
+          buttonBorder: 'border-2 border-pink-200',
+          buttonHover: 'hover:bg-pink-200',
+          buttonOutline: 'focus-visible:outline-pink-700',
+          buttonText: 'text-pink hover:text-black',
+          inputFocus: 'focus-within:ring-pink-500',
+          textColor: 'text-pink-500',
+          errorText: 'text-blue-600',
+          svgFill: '',
+          bgImage: 'bg-dokiBG bg-cover bg-center  bg-no-repeat  ',
+          visibility: '',
+        });
+        break;
+      default:
+        setTheme({
+          backgroundColor: 'bg-slate-950',
+          contentBackgroundColor: '',
+          buttonBG: 'bg-green-800',
+          buttonBorder: '',
+          buttonHover: 'hover:bg-green-700',
+          buttonOutline: 'focus-visible:outline-green-800',
+          buttonText: 'text-white',
+          inputFocus: 'focus-within:ring-indigo-600',
+          textColor: 'text-white',
+          errorText: 'text-red-600',
+          svgFill: 'fill-red-500',
+          bgImage: '',
+          visibility: '',
+        });
     }
   };
 
   const BM = ['66', '77'];
 
   const changeTheme = () => {
-    setThemeBM(!themeBM);
+    if (themeBM === 'bm') {
+      setThemeBM();
+    } else {
+      setThemeBM('bm');
+    }
     setIgnoreParams(true);
     handleTheme();
   };
@@ -340,7 +392,7 @@ function App() {
   const easterEgg = () => {
     setIgnoreParams(true);
     handleBBAB();
-    setThemeBM(true);
+    setThemeBM('bm');
     playerRef.current.player.player.mute();
 
     setTimeout(() => {
@@ -358,7 +410,7 @@ function App() {
     setReactorUrl('https://www.youtube.com/watch?v=sx6f0uiUOvA');
     setTalentUrl('https://www.youtube.com/watch?v=10V4-xxYZS4');
 
-    setThemeBM(true);
+    setThemeBM('doki');
     playerRef.current.player.player.mute();
     setReactorStart('0:10');
 
@@ -380,7 +432,7 @@ function App() {
     setIgnoreParams(true);
     setReactorUrl('https://www.youtube.com/watch?v=RorkQ79V-68');
     setTalentUrl('https://www.youtube.com/watch?v=RorkQ79V-68');
-    setThemeBM(true);
+    setThemeBM('bm');
     playerRef.current.player.player.mute();
 
     setTimeout(() => {
@@ -393,18 +445,41 @@ function App() {
 
   //OTFGK code
 
+  const [otfgk, setOtfgk] = useState(false);
+  const [audioOtfgk] = useState(new Audio(otfgkMp));
+
   const OTFGK = ['79', '84', '70', '71', '75'];
 
   const handelOtfgk = () => {
     setIgnoreParams(true);
-    setReactorUrl('https://www.dailymotion.com/video/x7vu9gy');
-    setTalentUrl('https://www.dailymotion.com/video/x7vu9gy');
-    setThemeBM(true);
+    setThemeBM('bm');
+
+    handlePauseBoth();
+    handleTheme();
+
+    audioOtfgk.play();
+    audioOtfgk.volume = 0.2;
+    setMotionInitial({
+      opacity: 0,
+      scale: 0.2,
+      translate: '-50% -50%',
+    });
+    setMotionInView('');
+    setMotionAnimate({ opacity: 1, scale: 2 });
+    setMotionTransition({ duration: 15.5 });
 
     setTimeout(() => {
-      playerRef.current.player.player.mute(true);
-      handlePlayBoth();
-    }, '1000');
+      setShowCard(true);
+      setTheme({
+        visibility: 'invisible',
+      });
+    }, '1500');
+
+    setTimeout(() => {
+      setShowCard(false);
+      setThemeBM('otfgk');
+      handleTheme();
+    }, '9000');
   };
 
   useKonami(handelOtfgk, { code: OTFGK });
@@ -421,32 +496,35 @@ function App() {
 
   // DEATH CODE
 
-  const [death, setDeath] = useState(false);
   const [audio] = useState(new Audio(deathMp));
-
+  const [death, setDeath] = useState(false);
   const DEATH = ['68', '69', '65', '84', '72'];
 
   const handleDeath = () => {
     setIgnoreParams(true);
-    setThemeBM(true);
+    setThemeBM('bm');
 
     handlePauseBoth();
     handleTheme();
 
     setDeath(true);
+    setShowCard(true);
+
+    setMotionInitial('offscreen');
+    setMotionInView('onscreen');
+    setMotionAnimate('');
+    setMotionTransition('');
 
     audio.play();
     audio.volume = 0.2;
     setTimeout(() => {
-      setDeath(false);
-
-      audio.pause();
-    }, '50000');
+      setShowCard(false);
+    }, '51000');
   };
 
   useKonami(handleDeath, { code: DEATH });
 
-  var cardVariants = {
+  var cardVariantsDeath = {
     offscreen: {
       y: 900,
     },
@@ -471,15 +549,16 @@ function App() {
   function Card() {
     return (
       <motion.div
-        className="card-container"
-        initial="offscreen"
-        whileInView="onscreen"
+        className={`card-container `}
+        initial={motionInitial}
+        whileInView={motionInView}
         viewport={{ once: true, amount: 0.8 }}
-        animate={{}}
+        animate={motionAnimate}
+        transition={motionTransition}
       >
         <div />
-        <motion.div className="card" variants={cardVariants}>
-          <img className="" src={cross} />
+        <motion.div className="card" variants={death ? cardVariantsDeath : ''}>
+          <img className="" src={death ? cross : imageOtfgk} />
         </motion.div>
       </motion.div>
     );
@@ -494,8 +573,10 @@ function App() {
 
   return (
     <div className={` relative ${theme.backgroundColor} ${theme.textColor} `}>
-      {death ? <Card /> : ''}
-      <section className="flex flex-col md:flex-row content-center mt-8">
+      {showCard ? <Card /> : ''}
+      <section
+        className={`flex flex-col md:flex-row content-center mt-8 ${theme.visibility}`}
+      >
         <div className="w-full">
           <div className=" player-wrapper">
             {/* reactor video player */}
@@ -536,10 +617,10 @@ function App() {
           </div>
         </div>
       </section>
-      <section className={` ${theme.bgImage} `}>
-        {themeBM ? (
+      <section className={` ${theme.bgImage} ${theme.visibility} `}>
+        {theme.logoImage !== undefined ? (
           <div className="flex justify-center mt-6 w-full">
-            <img className="" src={logo} />
+            <img className="" src={`${theme.logoImage} `} />
           </div>
         ) : (
           ''

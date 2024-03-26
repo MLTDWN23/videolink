@@ -15,6 +15,8 @@ export default {
         smoke: "url('./assets/smoke.jpg')",
         theOne: "url('./assets/theone.jpg')",
         backBM: "url('./assets/background.jpg')",
+        dokiBG: "url('./assets/dokibg.png')",
+        otfgkBG: "url('./assets/otfgkbg.jpg')",
       },
     },
   },

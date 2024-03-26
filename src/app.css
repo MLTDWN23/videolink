@@ -22,7 +22,7 @@
   /* box-shadow: 0 0 1px hsl(0deg 0% 0% / 0.075), 0 0 2px hsl(0deg 0% 0% / 0.075),
     0 0 4px hsl(0deg 0% 0% / 0.075), 0 0 8px hsl(0deg 0% 0% / 0.075),
     0 0 16px hsl(0deg 0% 0% / 0.075); */
-  transform-origin: 10% 60%;
+  transform-origin: 50% 50%;
 }
 
 .card-container {
