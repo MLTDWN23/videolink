@@ -294,6 +294,24 @@ function App() {
           visibility: '',
         });
         break;
+      case 'death':
+        setTheme({
+          logoImage: logo,
+          backgroundColor: 'bg-black',
+          contentBackgroundColor: 'bg-black/[.7] ',
+          buttonBG: 'bg-black',
+          buttonBorder: 'border-2 border-bmRed',
+          buttonHover: 'hover:bg-red-700',
+          buttonOutline: 'focus-visible:outline-red-800',
+          buttonText: 'text-bmRed hover:text-black',
+          inputFocus: 'focus-within:ring-red-600',
+          textColor: 'text-red-600',
+          errorText: 'text-blue-600',
+          svgFill: '',
+          bgImage: 'bg-deathBG bg-contain bg-center  bg-no-repeat  ',
+          visibility: '',
+        });
+        break;
       case 'otfgk':
         setTheme({
           logoImage: logo,
@@ -309,6 +327,42 @@ function App() {
           errorText: 'text-blue-600',
           svgFill: '',
           bgImage: 'bg-otfgkBG bg-cover bg-center  bg-no-repeat  ',
+          visibility: '',
+        });
+        break;
+      case 'throne':
+        setTheme({
+          logoImage: logo,
+          backgroundColor: 'bg-black',
+          contentBackgroundColor: 'bg-black/[.7] ',
+          buttonBG: 'bg-black',
+          buttonBorder: 'border-2 border-bmRed',
+          buttonHover: 'hover:bg-red-700',
+          buttonOutline: 'focus-visible:outline-red-800',
+          buttonText: 'text-bmRed hover:text-black',
+          inputFocus: 'focus-within:ring-red-600',
+          textColor: 'text-red-600',
+          errorText: 'text-blue-600',
+          svgFill: '',
+          bgImage: 'bg-throneBG bg-cover bg-center  bg-no-repeat  ',
+          visibility: '',
+        });
+        break;
+      case 'bbab':
+        setTheme({
+          logoImage: logo,
+          backgroundColor: 'bg-black',
+          contentBackgroundColor: 'bg-black/[.7] ',
+          buttonBG: 'bg-blue-700',
+          buttonBorder: 'border-2 border-blue-500',
+          buttonHover: 'hover:bg-blue-500',
+          buttonOutline: 'focus-visible:outline-blue-800',
+          buttonText: 'text-black hover:text-black',
+          inputFocus: 'focus-within:ring-blue-600',
+          textColor: 'text-blue-600',
+          errorText: 'text-red-600',
+          svgFill: '',
+          bgImage: 'bg-bbabBG bg-contain bg-center  bg-no-repeat  ',
           visibility: '',
         });
         break;
@@ -381,6 +435,17 @@ function App() {
 
   useKonami(changeTheme, { code: BM });
 
+  const THRONE = ['84', '72', '82', '79', '78', '69'];
+
+  const handleThrone = () => {
+    setThemeBM('throne');
+
+    setIgnoreParams(true);
+    handleTheme();
+  };
+
+  useKonami(handleThrone, { code: THRONE });
+
   //BBAB CODE
 
   const handleBBAB = () => {
@@ -392,7 +457,7 @@ function App() {
   const easterEgg = () => {
     setIgnoreParams(true);
     handleBBAB();
-    setThemeBM('bm');
+    setThemeBM('bbab');
     playerRef.current.player.player.mute();
 
     setTimeout(() => {
@@ -518,6 +583,7 @@ function App() {
     audio.play();
     audio.volume = 0.2;
     setTimeout(() => {
+      setThemeBM('death');
       setShowCard(false);
     }, '51000');
   };
