@@ -459,7 +459,7 @@ function App() {
     handleBBAB();
     setThemeBM('bbab');
     playerRef.current.player.player.mute();
-
+    handleTheme();
     setTimeout(() => {
       handlePlayBoth();
     }, '1500');
@@ -478,6 +478,7 @@ function App() {
     setThemeBM('doki');
     playerRef.current.player.player.mute();
     setReactorStart('0:10');
+    handleTheme();
 
     setIsReady(false);
 
@@ -554,6 +555,7 @@ function App() {
   const THEONE = ['84', '72', '69', '79', '78', '69'];
 
   const handelTheOne = () => {
+    setIgnoreParams(true);
     setThemeBM('theone');
     handleTheme();
   };
@@ -583,13 +585,32 @@ function App() {
 
     audio.play();
     audio.volume = 0.2;
+
     setTimeout(() => {
+      setDeath(false);
       setThemeBM('death');
       setShowCard(false);
+      handleTheme();
     }, '51000');
   };
 
   useKonami(handleDeath, { code: DEATH });
+
+  const SKIP = ['32'];
+
+  //skip audio and animation
+  const handelSkip = () => {
+    audio.pause();
+    audioOtfgk.pause();
+    setShowCard(false);
+    setDeath(false);
+    setTheme({
+      visibility: '',
+    });
+    handleTheme();
+  };
+
+  useKonami(handelSkip, { code: SKIP });
 
   var cardVariantsDeath = {
     offscreen: {
