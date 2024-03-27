@@ -483,6 +483,7 @@ function App() {
 
     setTimeout(() => {
       handlePlayBoth();
+      setReactorStart('0:00');
     }, '1500');
   };
 
