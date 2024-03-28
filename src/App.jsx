@@ -6,18 +6,25 @@ import { Duration, format } from './Duration';
 import { useKonami } from 'react-konami-code';
 import { motion } from 'framer-motion';
 import './app.css';
-import logo from './assets/logo.png';
-import dokiLogo from './assets/dokilogo.png';
+
 import cross from './assets/deathCross.png';
 import imageOtfgk from './assets/otfgk.png';
 import deathMp from './assets/deathshort.aac';
 import otfgkMp from './assets/otfgk.aac';
+import Themes from './ThemeData';
 
 function App() {
   const playerRef = useRef();
   const contentRef = useRef();
-  let { colorWay, reactUrl, reactStart, talUrl, talStart, playPause } =
-    useParams();
+  let {
+    colorWay,
+    reactUrl,
+    reactStart,
+    talUrl,
+    talStart,
+    playPause,
+    extraContentParam,
+  } = useParams();
 
   const [reactorUrl, setReactorUrl] = useState(
     'https://www.youtube.com/watch?v=LXb3EKWsInQ'
@@ -42,6 +49,8 @@ function App() {
 
   const [sharelink, setSharelink] = useState();
 
+  //pause resume state
+
   const [pauseSection, setPauseSection] = useState(false);
 
   const [reactorPauseResume, setReactorPauseResume] = useState([
@@ -50,6 +59,13 @@ function App() {
 
   const [errorReactorPauseResume, setErrorReactorPauseResume] = useState();
 
+  const [extraContentSection, setExtraContentSection] = useState(false);
+
+  const [extraContent, setExtraContent] = useState([{ start: '', url: '' }]);
+
+  const [errorExtraContentStart, setErrorExtraContentStart] = useState();
+
+  //theme state
   const [themeBM, setThemeBM] = useState();
 
   //Motion state
@@ -61,36 +77,28 @@ function App() {
 
   //setThemeBM(false);
 
-  const [theme, setTheme] = useState({
-    backgroundColor: 'bg-slate-950',
-    contentBackgroundColor: '',
-    buttonBG: 'bg-green-800',
-    buttonBorder: '',
-    buttonHover: 'hover:bg-green-700',
-    buttonOutline: 'focus-visible:outline-green-800',
-    buttonText: 'text-white',
-    inputFocus: 'focus-within:ring-indigo-600',
-    textColor: 'text-white',
-    errorText: 'text-red-600',
-    svgFill: 'fill-red-500',
-    bgImage: '',
-    visibility: '',
-  });
+  const [theme, setTheme] = useState(Themes.default);
 
   const regNum = /^\d+:\d{2,2}$/;
 
   //pull data from url
   const handelParams = () => {
-    let res;
+    let resPausePlay;
+    let resExtraConent;
 
     //check for undefined before parsing json
     if (playPause === undefined) {
-      res = undefined;
+      resPausePlay = undefined;
     } else {
-      res = JSON.parse(playPause);
+      resPausePlay = JSON.parse(playPause);
     }
 
-    console.log(colorWay);
+    if (extraContentParam === undefined) {
+      resExtraConent = undefined;
+    } else {
+      resExtraConent = JSON.parse(extraContentParam);
+    }
+
     //check and set data
     if (
       ignoreParams != true &&
@@ -99,14 +107,16 @@ function App() {
       reactStart != undefined &&
       talUrl != undefined &&
       talStart != undefined &&
-      res != undefined
+      resPausePlay != undefined &&
+      resExtraConent != undefined
     ) {
       setReactorUrl(decodeURIComponent(reactUrl));
       setThemeBM(decodeURIComponent(colorWay));
       setReactorStart(decodeURIComponent(reactStart));
       setTalentUrl(decodeURIComponent(talUrl));
       setTalentStart(decodeURIComponent(talStart));
-      setReactorPauseResume(res);
+      setReactorPauseResume(resPausePlay);
+      setExtraContent(resExtraConent);
     }
   };
 
@@ -141,6 +151,7 @@ function App() {
 
     handleTalentplaying(played);
     handleTalentPlayPause(played);
+    handleExtraContentLoad(played);
   };
 
   //start content when reactor time is @
@@ -168,6 +179,33 @@ function App() {
     });
   };
 
+  //handle extra content
+  const handleExtraContentLoad = (played) => {
+    let extraContentStart = extraContent.map((e) => {
+      return [e.start, e.url];
+    });
+
+    extraContentStart.forEach((data) => {
+      const extraStart = data[0];
+      const url = data[1];
+
+      const parts = extraStart.split(':');
+      const minutes = parseInt(parts[0], 10) || 0;
+      const seconds = parseFloat(parts[1]) || 0;
+      const timeToStart = minutes * 60 + seconds;
+
+      if (Math.floor(played + 1) === timeToStart - 10) {
+        console.log('10 to start');
+
+        console.log(url);
+        handlePauseTalent();
+
+        setTalentUrl(url);
+        setTalentStart(extraStart);
+      }
+    });
+  };
+
   //create link
   const handleShare = () => {
     setSharelink(
@@ -177,32 +215,37 @@ function App() {
         reactorStart
       )}/${encodeURIComponent(talenturl)}/${encodeURIComponent(
         talentStart
-      )}/${encodeURIComponent(JSON.stringify(reactorPauseResume))} `
+      )}/${encodeURIComponent(
+        JSON.stringify(reactorPauseResume)
+      )}/${encodeURIComponent(JSON.stringify(extraContent))} `
     );
   };
 
   //handle input start time for content
   const handleReactorStart = (e) => {
+    setIgnoreParams(true);
+    setReactorStart(e.target.value);
+
     if (!regNum.test(e.target.value)) {
       setErrorReactorStart(true);
     } else {
-      setReactorStart(e.target.value);
-      setIgnoreParams(true);
       setErrorReactorStart(false);
     }
   };
 
   //handle input start time for content
   const handleTalentStart = (e) => {
+    setIgnoreParams(true);
+    setTalentStart(e.target.value);
+
     if (!regNum.test(e.target.value)) {
       setErrorTalentStart(true);
     } else {
-      setTalentStart(e.target.value);
-      setIgnoreParams(true);
       setErrorTalentStart(false);
     }
   };
 
+  //show hide pause inputs
   const handlePauseSection = () => {
     setPauseSection(!pauseSection);
   };
@@ -237,6 +280,49 @@ function App() {
     let data = [...reactorPauseResume];
     data.splice(index, 1);
     setReactorPauseResume(data);
+  };
+
+  //show hide extra content inputs
+  const handleExtraContentSection = () => {
+    setExtraContentSection(!extraContentSection);
+  };
+
+  // let cons che === t
+
+  //handle pause resume inputs
+  const handleExtraContent = (event, index) => {
+    let data = [...extraContent];
+    data[index][event.target.name] = event.target.value;
+    setExtraContent(data);
+
+    // console.log(event.target.id);
+
+    if (event.target.id === 'Content Start') {
+      if (!regNum.test(event.target.value)) {
+        setErrorExtraContentStart(true);
+      } else {
+        setErrorExtraContentStart(false);
+      }
+    }
+  };
+
+  //add pause resume inputs
+  const addExtraContentFields = (e) => {
+    e.preventDefault();
+
+    let object = {
+      start: '',
+      url: '',
+    };
+
+    setExtraContent([...extraContent, object]);
+  };
+
+  //remove pause resume inputs
+  const removeExtraContentFields = (index) => {
+    let data = [...extraContent];
+    data.splice(index, 1);
+    setExtraContent(data);
   };
 
   //handle form submit
@@ -277,149 +363,34 @@ function App() {
   const handleTheme = () => {
     switch (themeBM) {
       case 'bm':
-        setTheme({
-          logoImage: logo,
-          backgroundColor: 'bg-black',
-          contentBackgroundColor: 'bg-black/[.7] ',
-          buttonBG: 'bg-black',
-          buttonBorder: 'border-2 border-bmRed',
-          buttonHover: 'hover:bg-red-700',
-          buttonOutline: 'focus-visible:outline-red-800',
-          buttonText: 'text-bmRed hover:text-black',
-          inputFocus: 'focus-within:ring-red-600',
-          textColor: 'text-red-600',
-          errorText: 'text-blue-600',
-          svgFill: '',
-          bgImage: 'bg-smoke bg-cover bg-center  bg-no-repeat  ',
-          visibility: '',
-        });
+        setTheme(Themes.bm);
         break;
       case 'death':
-        setTheme({
-          logoImage: logo,
-          backgroundColor: 'bg-black',
-          contentBackgroundColor: 'bg-black/[.7] ',
-          buttonBG: 'bg-black',
-          buttonBorder: 'border-2 border-bmRed',
-          buttonHover: 'hover:bg-red-700',
-          buttonOutline: 'focus-visible:outline-red-800',
-          buttonText: 'text-bmRed hover:text-black',
-          inputFocus: 'focus-within:ring-red-600',
-          textColor: 'text-red-600',
-          errorText: 'text-blue-600',
-          svgFill: '',
-          bgImage: 'bg-deathBG bg-contain bg-center  bg-no-repeat  ',
-          visibility: '',
-        });
+        setTheme(Themes.death);
         break;
       case 'otfgk':
-        setTheme({
-          logoImage: logo,
-          backgroundColor: 'bg-black',
-          contentBackgroundColor: 'bg-black ',
-          buttonBG: 'bg-black',
-          buttonBorder: 'border-2 border-bmRed',
-          buttonHover: 'hover:bg-red-700',
-          buttonOutline: 'focus-visible:outline-red-800',
-          buttonText: 'text-bmRed hover:text-black',
-          inputFocus: 'focus-within:ring-red-600',
-          textColor: 'text-red-600',
-          errorText: 'text-blue-600',
-          svgFill: '',
-          bgImage: 'bg-otfgkBG bg-cover bg-center  bg-no-repeat  ',
-          visibility: '',
-        });
+        setTheme(Themes.otfgk);
         break;
       case 'throne':
-        setTheme({
-          logoImage: logo,
-          backgroundColor: 'bg-black',
-          contentBackgroundColor: 'bg-black/[.7] ',
-          buttonBG: 'bg-black',
-          buttonBorder: 'border-2 border-bmRed',
-          buttonHover: 'hover:bg-red-700',
-          buttonOutline: 'focus-visible:outline-red-800',
-          buttonText: 'text-bmRed hover:text-black',
-          inputFocus: 'focus-within:ring-red-600',
-          textColor: 'text-red-600',
-          errorText: 'text-blue-600',
-          svgFill: '',
-          bgImage: 'bg-throneBG bg-cover bg-center  bg-no-repeat  ',
-          visibility: '',
-        });
+        setTheme(Themes.throne);
         break;
       case 'bbab':
-        setTheme({
-          logoImage: logo,
-          backgroundColor: 'bg-black',
-          contentBackgroundColor: 'bg-black/[.7] ',
-          buttonBG: 'bg-blue-700',
-          buttonBorder: 'border-2 border-blue-500',
-          buttonHover: 'hover:bg-blue-500',
-          buttonOutline: 'focus-visible:outline-blue-800',
-          buttonText: 'text-black hover:text-black',
-          inputFocus: 'focus-within:ring-blue-600',
-          textColor: 'text-blue-600',
-          errorText: 'text-red-600',
-          svgFill: '',
-          bgImage: 'bg-bbabBG bg-contain bg-center  bg-no-repeat  ',
-          visibility: '',
-        });
+        setTheme(Themes.bbab);
         break;
       case 'theone':
-        setTheme({
-          logoImage: logo,
-          backgroundColor: 'bg-black',
-          contentBackgroundColor: 'bg-black/[.7] ',
-          buttonBG: 'bg-black',
-          buttonBorder: 'border-2 border-amber-200',
-          buttonHover: 'hover:bg-amber-200',
-          buttonOutline: 'focus-visible:outline-amber-700',
-          buttonText: 'text-amber hover:text-black',
-          inputFocus: 'focus-within:ring-amber-500',
-          textColor: 'text-amber-500',
-          errorText: 'text-blue-600',
-          svgFill: '',
-          bgImage: 'bg-theOne bg-cover bg-center  bg-no-repeat  ',
-          visibility: '',
-        });
+        setTheme(Themes.theone);
         break;
       case 'doki':
-        setTheme({
-          logoImage: dokiLogo,
-          backgroundColor: 'bg-black',
-          contentBackgroundColor: 'bg-black/[.7] ',
-          buttonBG: 'bg-black',
-          buttonBorder: 'border-2 border-pink-200',
-          buttonHover: 'hover:bg-pink-200',
-          buttonOutline: 'focus-visible:outline-pink-700',
-          buttonText: 'text-pink hover:text-black',
-          inputFocus: 'focus-within:ring-pink-500',
-          textColor: 'text-pink-500',
-          errorText: 'text-blue-600',
-          svgFill: '',
-          bgImage: 'bg-dokiBG bg-cover bg-center  bg-no-repeat  ',
-          visibility: '',
-        });
+        setTheme(Themes.doki);
         break;
       default:
-        setTheme({
-          backgroundColor: 'bg-slate-950',
-          contentBackgroundColor: '',
-          buttonBG: 'bg-green-800',
-          buttonBorder: '',
-          buttonHover: 'hover:bg-green-700',
-          buttonOutline: 'focus-visible:outline-green-800',
-          buttonText: 'text-white',
-          inputFocus: 'focus-within:ring-indigo-600',
-          textColor: 'text-white',
-          errorText: 'text-red-600',
-          svgFill: 'fill-red-500',
-          bgImage: '',
-          visibility: '',
-        });
+        setTheme(Themes.default);
     }
   };
+
+  //codes
+
+  //bm toggle
 
   const BM = ['66', '77'];
 
@@ -434,6 +405,8 @@ function App() {
   };
 
   useKonami(changeTheme, { code: BM });
+
+  //throne
 
   const THRONE = ['84', '72', '82', '79', '78', '69'];
 
@@ -512,7 +485,6 @@ function App() {
 
   //OTFGK code
 
-  const [otfgk, setOtfgk] = useState(false);
   const [audioOtfgk] = useState(new Audio(otfgkMp));
 
   const OTFGK = ['79', '84', '70', '71', '75'];
@@ -652,7 +624,7 @@ function App() {
     );
   }
 
-  //get url data onload
+  //get url data and update theme
   useEffect(() => {
     handelParams();
 
@@ -763,7 +735,7 @@ function App() {
                     <input
                       required
                       type="text"
-                      name="ReactorUrl"
+                      name="Reactorurl"
                       id="ReactorUrl"
                       className={`block flex-1 border-0 bg-transparent py-1.5 pl-1 ${theme.textColor} placeholder:text-gray-500 focus:ring-0 sm:text-sm sm:leading-6`}
                       placeholder="https://www.youtube.com/watch?v=LXb3EKWsInQ"
@@ -771,6 +743,7 @@ function App() {
                         setReactorUrl(e.target.value);
                         setIgnoreParams(true);
                       }}
+                      value={reactorUrl}
                     />
                   </div>
                 </div>
@@ -794,7 +767,7 @@ function App() {
                     <input
                       required
                       type="text"
-                      name="talentUrl"
+                      name="talenturl"
                       id="talentUrl"
                       className={`block flex-1 border-0 bg-transparent py-1.5 pl-1 ${theme.textColor} placeholder:text-gray-500 focus:ring-0 sm:text-sm sm:leading-6`}
                       placeholder="https://www.youtube.com/watch?v=LXb3EKWsInQ"
@@ -802,6 +775,7 @@ function App() {
                         setTalentUrl(e.target.value);
                         setIgnoreParams(true);
                       }}
+                      value={talenturl}
                     />
                   </div>
                 </div>
@@ -825,11 +799,12 @@ function App() {
                   >
                     <input
                       type="text"
-                      name="reactorStart"
+                      name="reactorstart"
                       id="reactorStart"
                       className={`block flex-1 border-0 bg-transparent py-1.5 pl-1 ${theme.textColor} placeholder:text-gray-500 focus:ring-0 sm:text-sm sm:leading-6`}
                       placeholder="0:00"
                       onChange={handleReactorStart}
+                      value={reactorStart}
                     />
                   </div>
                   {errorReactorStart ? (
@@ -991,11 +966,12 @@ function App() {
                     <input
                       required
                       type="text"
-                      name="talenStart"
+                      name="talenstart"
                       id="talentStart"
                       className={`block flex-1 border-0 bg-transparent py-1.5 pl-1 ${theme.textColor} placeholder:text-gray-500 focus:ring-0 sm:text-sm sm:leading-6`}
                       placeholder="0:10"
                       onChange={handleTalentStart}
+                      value={talentStart}
                     />
                   </div>
                   {errorTalentStart ? (
@@ -1009,6 +985,140 @@ function App() {
                   )}
                 </div>
               </div>
+
+              {/* extra content pause */}
+
+              {extraContentSection ? (
+                <div>
+                  {extraContent.map((form, index) => {
+                    return (
+                      <div key={index}>
+                        <div className="mt-10 grid grid-cols-2">
+                          <div
+                            className={`p-2 mr-20 ${theme.contentBackgroundColor} sm:max-w-md`}
+                          >
+                            <label
+                              htmlFor="Content Start"
+                              className={` text-md font-medium leading-6 0`}
+                            >
+                              Extra Content Start @
+                            </label>
+                            <div className="mt-2">
+                              <div
+                                className={`flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset ${theme.inputFocus}  sm:max-w-md`}
+                              >
+                                <input
+                                  type="text"
+                                  name="start"
+                                  id="Content Start"
+                                  className={`block flex-1 border-0 bg-transparent py-1.5 pl-1 ${theme.textColor} placeholder:text-gray-500 focus:ring-0 sm:text-sm sm:leading-6`}
+                                  placeholder="5:40"
+                                  onChange={(event) =>
+                                    handleExtraContent(event, index)
+                                  }
+                                  value={form.start}
+                                />
+                              </div>
+                            </div>
+                            {errorExtraContentStart ? (
+                              <p
+                                className={`${theme.errorText} ${theme.contentBackgroundColor} inline-block p-2`}
+                              >
+                                Error format 0:00
+                              </p>
+                            ) : (
+                              <p></p>
+                            )}
+                          </div>
+
+                          <div
+                            className={`p-2 mr-20 ${theme.contentBackgroundColor} sm:max-w-md`}
+                          >
+                            <label
+                              htmlFor="Extra Content URL"
+                              className="block text-md font-medium leading-6 0"
+                            >
+                              Extra Content URL
+                            </label>
+                            <div className="mt-2">
+                              <div
+                                className={`flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset ${theme.inputFocus}  sm:max-w-md`}
+                              >
+                                <input
+                                  type="text"
+                                  name="url"
+                                  id="Extra Content URL"
+                                  className={`block flex-1 border-0 bg-transparent py-1.5 pl-1 ${theme.textColor} placeholder:text-gray-500 focus:ring-0 sm:text-sm sm:leading-6`}
+                                  placeholder="https://www.youtube.com/watch?v=LXb3EKWsInQ"
+                                  onChange={(event) =>
+                                    handleExtraContent(event, index)
+                                  }
+                                  value={form.url}
+                                />
+                                <button
+                                  onClick={() =>
+                                    removeExtraContentFields(index)
+                                  }
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class={`w-6 h-6 ${theme.svgFill}`}
+                                  >
+                                    <path
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                    />
+                                  </svg>
+                                </button>
+                              </div>
+                            </div>
+                            {/* {errorReactorPauseResume ? (
+                        <p className="text-red-600">Error format 0:00</p>
+                      ) : (
+                        <p></p>
+                      )} */}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+
+                  <div className="text-center mt-5">
+                    {/* <div>
+                      {errorReactorPauseResume ? (
+                        <p
+                          className={`${theme.errorText} ${theme.contentBackgroundColor} inline-block p-2`}
+                        >
+                          Error Check Pause and Resume format 0:00
+                        </p>
+                      ) : (
+                        <p></p>
+                      )}
+                      addExtraContentFields
+                    </div> */}
+                    <button
+                      onClick={addExtraContentFields}
+                      className={`rounded-md ${theme.buttonBG} px-3 py-2 text-sm font-semibold ${theme.buttonText} ${theme.buttonBorder}  shadow-sm ${theme.buttonHover} focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${theme.buttonOutline}`}
+                    >
+                      Add More
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center mt-5">
+                  <button
+                    onClick={handleExtraContentSection}
+                    className={`rounded-md ${theme.buttonBG} px-3 py-2 text-sm font-semibold ${theme.buttonText} ${theme.buttonBorder}  shadow-sm ${theme.buttonHover} focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${theme.buttonOutline}`}
+                  >
+                    Add Extra Content
+                  </button>
+                </div>
+              )}
             </div>
             <div className=" grid-cols-1 col-span-full py-8">
               <button
