@@ -383,6 +383,21 @@ function App() {
       case 'doki':
         setTheme(Themes.doki);
         break;
+      case 'megitsune':
+        setTheme(Themes.megitsune);
+        break;
+      case 'momo':
+        setTheme(Themes.momo);
+        break;
+      case 'moa':
+        setTheme(Themes.moa);
+        break;
+      case 'su':
+        setTheme(Themes.su);
+        break;
+      case 'yui':
+        setTheme(Themes.yui);
+        break;
       default:
         setTheme(Themes.default);
     }
@@ -418,6 +433,54 @@ function App() {
   };
 
   useKonami(handleThrone, { code: THRONE });
+
+  //MOMO
+
+  const MOMO = ['77', '79', '77', '79'];
+
+  const handleMomo = () => {
+    setThemeBM('momo');
+
+    setIgnoreParams(true);
+    handleTheme();
+  };
+
+  useKonami(handleMomo, { code: MOMO });
+
+  const MOA = ['77', '79', '65'];
+
+  const handleMoa = () => {
+    setThemeBM('moa');
+
+    setIgnoreParams(true);
+    handleTheme();
+  };
+
+  useKonami(handleMoa, { code: MOA });
+
+  //SU
+  const SU = ['83', '85', '189'];
+
+  const handleSu = () => {
+    setThemeBM('su');
+
+    setIgnoreParams(true);
+    handleTheme();
+  };
+
+  useKonami(handleSu, { code: SU });
+
+  //YUI
+  const YUI = ['89', '85', '73'];
+
+  const handleYui = () => {
+    setThemeBM('yui');
+
+    setIgnoreParams(true);
+    handleTheme();
+  };
+
+  useKonami(handleYui, { code: YUI });
 
   //BBAB CODE
 
@@ -472,7 +535,9 @@ function App() {
     setIgnoreParams(true);
     setReactorUrl('https://www.youtube.com/watch?v=RorkQ79V-68');
     setTalentUrl('https://www.youtube.com/watch?v=RorkQ79V-68');
-    setThemeBM('bm');
+    setThemeBM('megitsune');
+
+    handleTheme();
     playerRef.current.player.player.mute();
 
     setTimeout(() => {
