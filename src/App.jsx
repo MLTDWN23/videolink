@@ -498,7 +498,7 @@ function App() {
     handleTheme();
     setTimeout(() => {
       handlePlayBoth();
-    }, '1500');
+    }, '2000');
   };
   useKonami(easterEgg, { code: BBAB });
 
@@ -514,6 +514,7 @@ function App() {
     setThemeBM('doki');
     playerRef.current.player.player.mute();
     setReactorStart('0:10');
+    setContentStart('0:00');
     handleTheme();
 
     setIsReady(false);
@@ -521,7 +522,7 @@ function App() {
     setTimeout(() => {
       handlePlayBoth();
       setReactorStart('0:00');
-    }, '1500');
+    }, '2000');
   };
 
   useKonami(HandleDoki, { code: DOKI });
@@ -542,7 +543,7 @@ function App() {
 
     setTimeout(() => {
       handlePlayBoth();
-    }, '1500');
+    }, '2000');
   };
 
   useKonami(handelMegitsune, { code: KITSUNE });
