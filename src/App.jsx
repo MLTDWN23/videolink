@@ -514,10 +514,12 @@ function App() {
     setThemeBM('doki');
     playerRef.current.player.player.mute();
     setReactorStart('0:10');
+    setContentStart('0:00');
 
     handleTheme();
 
     setIsReady(false);
+    setIsContentReady(false);
 
     setTimeout(() => {
       handlePlayBoth();
