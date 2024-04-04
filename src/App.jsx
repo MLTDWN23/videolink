@@ -1221,7 +1221,7 @@ function App() {
           </form>
 
           <div className="flex justify-center my-4 "></div>
-          <div className="flex justify-center my-4 max-w-full text-wrap">
+          <div className="flex justify-center my-4 max-w-full text-wrap overflow-hidden">
             <div className="flex justify-center text-lg">
               {errorTalentStart ||
               errorReactorStart ||
