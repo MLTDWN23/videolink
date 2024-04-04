@@ -398,6 +398,9 @@ function App() {
       case 'yui':
         setTheme(Themes.yui);
         break;
+      case 'bbm':
+        setTheme(Themes.bbm);
+        break;
       default:
         setTheme(Themes.default);
     }
@@ -481,6 +484,17 @@ function App() {
   };
 
   useKonami(handleYui, { code: YUI });
+
+  const BLACK = ['66', '76', '65', '67', '75'];
+
+  const bbmTheme = () => {
+    setThemeBM('bbm');
+
+    setIgnoreParams(true);
+    handleTheme();
+  };
+
+  useKonami(bbmTheme, { code: BLACK });
 
   //BBAB CODE
 
