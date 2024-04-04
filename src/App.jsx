@@ -724,7 +724,7 @@ function App() {
     <div className={` relative ${theme.backgroundColor} ${theme.textColor} `}>
       {showCard ? <Card /> : ''}
       <section
-        className={`flex flex-col md:flex-row content-center mt-8 ${theme.visibility}`}
+        className={`flex flex-col lg:flex-row content-center mt-8 ${theme.visibility}`}
       >
         <div className="w-full">
           <div className=" player-wrapper">
@@ -915,7 +915,7 @@ function App() {
                   {reactorPauseResume.map((form, index) => {
                     return (
                       <div key={index}>
-                        <div className="mt-10 grid grid-cols-2">
+                        <div className="mt-10 grid grid-cols-1 lg:grid-cols-2">
                           <div
                             className={`p-2 mr-20 ${theme.contentBackgroundColor} sm:max-w-md`}
                           >
@@ -1082,7 +1082,7 @@ function App() {
                   {extraContent.map((form, index) => {
                     return (
                       <div key={index}>
-                        <div className="mt-10 grid grid-cols-2">
+                        <div className="mt-10 grid grid-cols-1 lg:grid-cols-2 ">
                           <div
                             className={`p-2 mr-20 ${theme.contentBackgroundColor} sm:max-w-md`}
                           >
