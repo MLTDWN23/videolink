@@ -32,6 +32,10 @@ function App() {
   const [talenturl, setTalentUrl] = useState(
     'https://www.youtube.com/watch?v=LXb3EKWsInQ'
   );
+  const [talentUrlInputValue, settalentUrlInputValue] = useState(
+    'https://www.youtube.com/watch?v=LXb3EKWsInQ'
+  );
+  const [talentStartInputValue, setTalentStartInputValue] = useState('0:10');
 
   const [playing, setPlaying] = useState(false);
   const [talentPlaying, setTalentPlaying] = useState(false);
@@ -115,6 +119,8 @@ function App() {
       setReactorStart(decodeURIComponent(reactStart));
       setTalentUrl(decodeURIComponent(talUrl));
       setTalentStart(decodeURIComponent(talStart));
+      settalentUrlInputValue(decodeURIComponent(talUrl));
+      setTalentStartInputValue(decodeURIComponent(talStart));
       setReactorPauseResume(resPausePlay);
       setExtraContent(resExtraConent);
     }
@@ -237,6 +243,7 @@ function App() {
   const handleTalentStart = (e) => {
     setIgnoreParams(true);
     setTalentStart(e.target.value);
+    setTalentStartInputValue(e.target.value);
 
     if (!regNum.test(e.target.value)) {
       setErrorTalentStart(true);
@@ -855,9 +862,10 @@ function App() {
                       placeholder="https://www.youtube.com/watch?v=LXb3EKWsInQ"
                       onChange={(e) => {
                         setTalentUrl(e.target.value);
+                        settalentUrlInputValue(e.target.value);
                         setIgnoreParams(true);
                       }}
-                      value={talenturl}
+                      value={talentUrlInputValue}
                     />
                   </div>
                 </div>
@@ -872,8 +880,7 @@ function App() {
                   htmlFor="reactorStart"
                   className={`p-2 text-md font-medium leading-6 0`}
                 >
-                  Start recator video from M:SS if you want to skip intro (can
-                  be left empty)
+                  Start recator video from M:SS if you want to skip intro
                 </label>
                 <div className="mt-2">
                   <div
@@ -1053,7 +1060,7 @@ function App() {
                       className={`block flex-1 border-0 bg-transparent py-1.5 pl-1 ${theme.textColor} placeholder:text-gray-500 focus:ring-0 sm:text-sm sm:leading-6`}
                       placeholder="0:10"
                       onChange={handleTalentStart}
-                      value={talentStart}
+                      value={talentStartInputValue}
                     />
                   </div>
                   {errorTalentStart ? (
@@ -1083,7 +1090,8 @@ function App() {
                               htmlFor="Content Start"
                               className={` text-md font-medium leading-6 0`}
                             >
-                              Extra Content Start @
+                              Start Extra Content when Reactor video Time is at
+                              M:SS
                             </label>
                             <div className="mt-2">
                               <div
