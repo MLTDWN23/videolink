@@ -219,8 +219,8 @@ function App() {
         themeBM
       )}/${encodeURIComponent(reactorUrl)}/${encodeURIComponent(
         reactorStart
-      )}/${encodeURIComponent(talenturl)}/${encodeURIComponent(
-        talentStart
+      )}/${encodeURIComponent(talentUrlInputValue)}/${encodeURIComponent(
+        talentStartInputValue
       )}/${encodeURIComponent(
         JSON.stringify(reactorPauseResume)
       )}/${encodeURIComponent(JSON.stringify(extraContent))} `
