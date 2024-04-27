@@ -187,6 +187,7 @@ function App() {
 
   //handle extra content
   const handleExtraContentLoad = (played) => {
+    setIsContentReady(false);
     let extraContentStart = extraContent.map((e) => {
       return [e.start, e.url];
     });
@@ -204,10 +205,15 @@ function App() {
         console.log('10 to start');
 
         console.log(url);
+
         handlePauseTalent();
 
         setTalentUrl(url);
+
         setTalentStart(extraStart);
+        setContentStart('0:00');
+
+        onContentReady();
       }
     });
   };
