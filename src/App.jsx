@@ -212,6 +212,7 @@ function App() {
 
         setTalentStart(extraStart);
         setContentStart('0:00');
+        handlePauseTalent();
 
         onContentReady();
       }
