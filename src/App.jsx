@@ -212,9 +212,12 @@ function App() {
 
         setTalentStart(extraStart);
         setContentStart('0:00');
-        handlePauseTalent();
 
-        onContentReady();
+        setTimeout(() => {
+          onContentReady();
+        }, '1000');
+
+        handlePauseTalent();
       }
     });
   };
@@ -368,6 +371,7 @@ function App() {
       const timeToStart = minutes * 60 + seconds;
 
       contentRef.current.seekTo(timeToStart, 'seconds');
+
       setIsContentReady(true);
     }
   });
@@ -769,6 +773,9 @@ function App() {
               onError={(e) => console.log('onError', e)}
               onReady={onContentReady}
               onStart={() => console.log('onStart')}
+              onPlaybackQualityChange={(e) =>
+                console.log('onPlaybackQualityChange', e)
+              }
             />
           </div>
         </div>
