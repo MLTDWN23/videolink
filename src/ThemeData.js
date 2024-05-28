@@ -1,5 +1,6 @@
 import logo from './assets/logo.png';
 import dokiLogo from './assets/dokilogo.png';
+import SGLogo from './assets/sakura-gakuin-logo.png';
 
 const Themes = {
   default: {
@@ -143,6 +144,22 @@ const Themes = {
     errorText: 'text-blue-600',
     svgFill: '',
     bgImage: 'bg-dokiBG bg-cover bg-center  bg-no-repeat  ',
+    visibility: '',
+  },
+  sakura: {
+    logoImage: SGLogo,
+    backgroundColor: 'bg-black',
+    contentBackgroundColor: 'bg-black/[.7] ',
+    buttonBG: 'bg-black',
+    buttonBorder: 'border-2 border-pink-200',
+    buttonHover: 'hover:bg-pink-200',
+    buttonOutline: 'focus-visible:outline-pink-700',
+    buttonText: 'text-pink hover:text-black',
+    inputFocus: 'focus-within:ring-pink-500',
+    textColor: 'text-pink-500',
+    errorText: 'text-blue-600',
+    svgFill: '',
+    bgImage: 'bg-SGBG bg-cover bg-center  bg-no-repeat  ',
     visibility: '',
   },
   megitsune: {

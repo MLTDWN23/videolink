@@ -419,6 +419,9 @@ function App() {
       case 'bbm':
         setTheme(Themes.bbm);
         break;
+      case 'sakura':
+        setTheme(Themes.sakura);
+        break;
       default:
         setTheme(Themes.default);
     }
@@ -467,6 +470,19 @@ function App() {
   };
 
   useKonami(handleMomo, { code: MOMO });
+
+  //SG
+
+  const SG = ['83', '71'];
+
+  const handleSG = () => {
+    setThemeBM('sakura');
+
+    setIgnoreParams(true);
+    handleTheme();
+  };
+
+  useKonami(handleSG, { code: SG });
 
   const MOA = ['77', '79', '65'];
 

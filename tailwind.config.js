@@ -26,6 +26,7 @@ export default {
         yuiBG: "url('./assets/yuibg.jpg')",
         bbmBG: "url('./assets/bbm.jpg')",
         megitsuneBG: "url('./assets/megitsune.jpg')",
+        SGBG: "url('./assets/SGbg.jpg')",
       },
     },
   },
