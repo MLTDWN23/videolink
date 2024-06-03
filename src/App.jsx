@@ -351,6 +351,10 @@ function App() {
 
   //start react video @
   const onReady = useCallback(() => {
+    setTimeout(() => {
+      handlePause();
+    }, '1000');
+
     if (!isReady) {
       const parts = reactorStart.split(':');
       const minutes = parseInt(parts[0], 10) || 0;
@@ -364,14 +368,20 @@ function App() {
 
   //START CONTENT @
   const onContentReady = useCallback(() => {
+    setTalentPlaying(true);
+    setTimeout(() => {
+      handlePauseTalent();
+    }, '1000');
+
     if (!isContentReady) {
       const parts = contentStart.split(':');
       const minutes = parseInt(parts[0], 10) || 0;
       const seconds = parseFloat(parts[1]) || 0;
       const timeToStart = minutes * 60 + seconds;
 
-      contentRef.current.seekTo(timeToStart, 'seconds');
+      //
 
+      contentRef.current.seekTo(timeToStart, 'seconds');
       setIsContentReady(true);
     }
   });
