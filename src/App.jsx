@@ -215,6 +215,7 @@ function App() {
 
         setTimeout(() => {
           onContentReady();
+          handlePauseTalent();
         }, '1000');
 
         handlePauseTalent();
@@ -352,7 +353,8 @@ function App() {
   //start react video @
   const onReady = useCallback(() => {
     setTimeout(() => {
-      handlePause();
+      setPlaying(false);
+      setTalentPlaying(false);
     }, '1000');
 
     if (!isReady) {
@@ -369,6 +371,7 @@ function App() {
   //START CONTENT @
   const onContentReady = useCallback(() => {
     setTalentPlaying(true);
+
     setTimeout(() => {
       handlePauseTalent();
     }, '1000');
