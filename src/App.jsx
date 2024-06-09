@@ -1074,7 +1074,7 @@ function App() {
                       onClick={addFields}
                       className={`rounded-md ${theme.buttonBG} px-3 py-2 text-sm font-semibold ${theme.buttonText} ${theme.buttonBorder}  shadow-sm ${theme.buttonHover} focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${theme.buttonOutline}`}
                     >
-                      Add more
+                      Add Pause
                     </button>
                   </div>
                 </div>
@@ -1247,7 +1247,7 @@ function App() {
                       onClick={addExtraContentFields}
                       className={`rounded-md ${theme.buttonBG} px-3 py-2 text-sm font-semibold ${theme.buttonText} ${theme.buttonBorder}  shadow-sm ${theme.buttonHover} focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${theme.buttonOutline}`}
                     >
-                      Add More
+                      Add Extra Content
                     </button>
                   </div>
                 </div>
