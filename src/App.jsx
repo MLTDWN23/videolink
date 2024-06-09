@@ -352,10 +352,19 @@ function App() {
 
   //start react video @
   const onReady = useCallback(() => {
+    setPlaying(false);
     setTimeout(() => {
       setPlaying(false);
       setTalentPlaying(false);
     }, '1000');
+
+    if (extraContentParam !== undefined) {
+      handleExtraContentSection();
+    }
+
+    if (playPause !== undefined) {
+      handlePauseSection();
+    }
 
     if (!isReady) {
       const parts = reactorStart.split(':');
