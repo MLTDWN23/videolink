@@ -83,7 +83,7 @@ function App() {
 
   const [theme, setTheme] = useState(Themes.default);
 
-  const regNum = /^\d+:\d{2,2}$/;
+  const regNum = /^(?:\d{1,2}:)?\d{2}:\d{2}$/;
 
   //pull data from url
   const handelParams = () => {
@@ -155,6 +155,7 @@ function App() {
   const handleProgress = (progress) => {
     setPlayed(progress.playedSeconds);
 
+    console.log(format(played + 1));
     handleTalentplaying(played);
     handleTalentPlayPause(played);
     handleExtraContentLoad(played);
@@ -197,28 +198,57 @@ function App() {
       const url = data[1];
 
       const parts = extraStart.split(':');
-      const minutes = parseInt(parts[0], 10) || 0;
-      const seconds = parseFloat(parts[1]) || 0;
-      const timeToStart = minutes * 60 + seconds;
 
-      if (Math.floor(played + 1) === timeToStart - 10) {
-        console.log('10 to start');
+      if (parts.length === 3) {
+        console.log('hours');
+        const hours = parseInt(parts[0], 10) || 0;
+        const minutes = parseInt(parts[1], 10) || 0;
+        const seconds = parseFloat(parts[2]) || 0;
+        const timeToStart = hours * 3600 + minutes * 60 + seconds;
 
-        console.log(url);
+        if (Math.floor(played + 1) === timeToStart - 10) {
+          console.log('10 to start');
 
-        handlePauseTalent();
+          console.log(url);
 
-        setTalentUrl(url);
-
-        setTalentStart(extraStart);
-        setContentStart('0:00');
-
-        setTimeout(() => {
-          onContentReady();
           handlePauseTalent();
-        }, '1000');
 
-        handlePauseTalent();
+          setTalentUrl(url);
+
+          setTalentStart(extraStart);
+          setContentStart('0:00');
+
+          setTimeout(() => {
+            onContentReady();
+            handlePauseTalent();
+          }, '1000');
+
+          handlePauseTalent();
+        }
+      } else {
+        const minutes = parseInt(parts[0], 10) || 0;
+        const seconds = parseFloat(parts[1]) || 0;
+        const timeToStart = minutes * 60 + seconds;
+
+        if (Math.floor(played + 1) === timeToStart - 10) {
+          console.log('10 to start');
+
+          console.log(url);
+
+          handlePauseTalent();
+
+          setTalentUrl(url);
+
+          setTalentStart(extraStart);
+          setContentStart('0:00');
+
+          setTimeout(() => {
+            onContentReady();
+            handlePauseTalent();
+          }, '1000');
+
+          handlePauseTalent();
+        }
       }
     });
   };
@@ -368,12 +398,24 @@ function App() {
 
     if (!isReady) {
       const parts = reactorStart.split(':');
-      const minutes = parseInt(parts[0], 10) || 0;
-      const seconds = parseFloat(parts[1]) || 0;
-      const timeToStart = minutes * 60 + seconds;
 
-      playerRef.current.seekTo(timeToStart, 'seconds');
-      setIsReady(true);
+      if (parts.length === 3) {
+        console.log('hours');
+        const hours = parseInt(parts[0], 10) || 0;
+        const minutes = parseInt(parts[1], 10) || 0;
+        const seconds = parseFloat(parts[2]) || 0;
+        const timeToStart = hours * 3600 + minutes * 60 + seconds;
+
+        playerRef.current.seekTo(timeToStart, 'seconds');
+        setIsReady(true);
+      } else {
+        const minutes = parseInt(parts[0], 10) || 0;
+        const seconds = parseFloat(parts[1]) || 0;
+        const timeToStart = minutes * 60 + seconds;
+
+        playerRef.current.seekTo(timeToStart, 'seconds');
+        setIsReady(true);
+      }
     }
   });
 
@@ -387,14 +429,24 @@ function App() {
 
     if (!isContentReady) {
       const parts = contentStart.split(':');
-      const minutes = parseInt(parts[0], 10) || 0;
-      const seconds = parseFloat(parts[1]) || 0;
-      const timeToStart = minutes * 60 + seconds;
 
-      //
+      if (parts.length === 3) {
+        console.log('hours');
+        const hours = parseInt(parts[0], 10) || 0;
+        const minutes = parseInt(parts[1], 10) || 0;
+        const seconds = parseFloat(parts[2]) || 0;
+        const timeToStart = hours * 3600 + minutes * 60 + seconds;
 
-      contentRef.current.seekTo(timeToStart, 'seconds');
-      setIsContentReady(true);
+        contentRef.current.seekTo(timeToStart, 'seconds');
+        setIsContentReady(true);
+      } else {
+        const minutes = parseInt(parts[0], 10) || 0;
+        const seconds = parseFloat(parts[1]) || 0;
+        const timeToStart = minutes * 60 + seconds;
+
+        contentRef.current.seekTo(timeToStart, 'seconds');
+        setIsContentReady(true);
+      }
     }
   });
 
