@@ -50,6 +50,7 @@ function App() {
   const [errorReactorStart, setErrorReactorStart] = useState(false);
   const [contentStart, setContentStart] = useState('');
   const [isContentReady, setIsContentReady] = useState(false);
+  const [frame, setFrame] = useState(false);
 
   const [sharelink, setSharelink] = useState();
 
@@ -83,7 +84,7 @@ function App() {
 
   const [theme, setTheme] = useState(Themes.default);
 
-  const regNum = /^(?:\d{1,2}:)?\d{2}:\d{2}$/;
+  const regNum = /^(?:\d{1,2}:)?\d{1,2}:\d{2}$/;
 
   //pull data from url
   const handelParams = () => {
@@ -850,23 +851,33 @@ function App() {
         <div className="w-full">
           <div className="player-wrapper">
             {/* content video player */}
-            <ReactPlayer
-              className="react-player"
-              ref={contentRef}
-              width="100%"
-              height="100%"
-              controls={true}
-              url={talenturl}
-              playing={talentPlaying}
-              onPlay={handlePlay}
-              onPause={handlePauseTalent}
-              onError={(e) => console.log('onError', e)}
-              onReady={onContentReady}
-              onStart={() => console.log('onStart')}
-              onPlaybackQualityChange={(e) =>
-                console.log('onPlaybackQualityChange', e)
-              }
-            />
+
+            {!frame ? (
+              <ReactPlayer
+                className="react-player"
+                ref={contentRef}
+                width="100%"
+                height="100%"
+                controls={true}
+                url={talenturl}
+                playing={talentPlaying}
+                onPlay={handlePlay}
+                onPause={handlePauseTalent}
+                onError={(e) => console.log('onError', e)}
+                onReady={onContentReady}
+                onStart={() => console.log('onStart')}
+                onPlaybackQualityChange={(e) =>
+                  console.log('onPlaybackQualityChange', e)
+                }
+              />
+            ) : (
+              <iframe
+                ref={contentRef}
+                width="100%"
+                height="100%"
+                src={talenturl}
+              ></iframe>
+            )}
           </div>
         </div>
       </section>
@@ -973,6 +984,14 @@ function App() {
                     />
                   </div>
                 </div>
+                {/* <button
+                  className={`rounded-md ${theme.buttonBG} px-3 py-2 text-sm font-semibold ${theme.buttonText} ${theme.buttonBorder}  shadow-sm ${theme.buttonHover} focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${theme.buttonOutline}`}
+                  onClick={() => {
+                    setFrame(!frame);
+                  }}
+                >
+                  Switch to iframe
+                </button> */}
               </div>
             </div>
             {/* start time  reactor video */}
