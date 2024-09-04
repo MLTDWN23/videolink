@@ -20,6 +20,7 @@ function App() {
     colorWay,
     reactUrl,
     reactStart,
+    conStart,
     talUrl,
     talStart,
     playPause,
@@ -48,6 +49,7 @@ function App() {
   const [ignoreParams, setIgnoreParams] = useState(false);
   const [errorTalentStart, setErrorTalentStart] = useState(false);
   const [errorReactorStart, setErrorReactorStart] = useState(false);
+  const [errorContentStart, setErrorContentStart] = useState(false);
   const [contentStart, setContentStart] = useState('');
   const [isContentReady, setIsContentReady] = useState(false);
   const [frame, setFrame] = useState(false);
@@ -110,6 +112,7 @@ function App() {
       colorWay != undefined &&
       reactUrl != undefined &&
       reactStart != undefined &&
+      conStart != undefined &&
       talUrl != undefined &&
       talStart != undefined &&
       resPausePlay != undefined &&
@@ -118,6 +121,7 @@ function App() {
       setReactorUrl(decodeURIComponent(reactUrl));
       setThemeBM(decodeURIComponent(colorWay));
       setReactorStart(decodeURIComponent(reactStart));
+      setContentStart(decodeURIComponent(conStart));
       setTalentUrl(decodeURIComponent(talUrl));
       setTalentStart(decodeURIComponent(talStart));
       settalentUrlInputValue(decodeURIComponent(talUrl));
@@ -261,9 +265,9 @@ function App() {
         themeBM
       )}/${encodeURIComponent(reactorUrl)}/${encodeURIComponent(
         reactorStart
-      )}/${encodeURIComponent(talentUrlInputValue)}/${encodeURIComponent(
-        talentStartInputValue
-      )}/${encodeURIComponent(
+      )}/${encodeURIComponent(contentStart)}/${encodeURIComponent(
+        talentUrlInputValue
+      )}/${encodeURIComponent(talentStartInputValue)}/${encodeURIComponent(
         JSON.stringify(reactorPauseResume)
       )}/${encodeURIComponent(JSON.stringify(extraContent))} `
     );
@@ -278,6 +282,18 @@ function App() {
       setErrorReactorStart(true);
     } else {
       setErrorReactorStart(false);
+    }
+  };
+
+  //handle input start time for content
+  const handleContentStart = (e) => {
+    setIgnoreParams(true);
+    setContentStart(e.target.value);
+
+    if (!regNum.test(e.target.value)) {
+      setErrorContentStart(true);
+    } else {
+      setErrorContentStart(false);
     }
   };
 
@@ -1192,6 +1208,41 @@ function App() {
                     >
                       Error Check format 0:00
                     </div>
+                  ) : (
+                    <p></p>
+                  )}
+                </div>
+              </div>
+
+              <div
+                className={`sm:col-span-4 mr-20 p-2 ${theme.contentBackgroundColor} sm:max-w-md`}
+              >
+                <label
+                  htmlFor="reactorStart"
+                  className={`p-2 text-md font-medium leading-6 0`}
+                >
+                  Start content video from M:SS if you want to skip intro
+                </label>
+                <div className="mt-2">
+                  <div
+                    className={`flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset ${theme.inputFocus}   sm:max-w-md`}
+                  >
+                    <input
+                      type="text"
+                      name="reactorstart"
+                      id="reactorStart"
+                      className={`block flex-1 border-0 bg-transparent py-1.5 pl-1 ${theme.textColor} placeholder:text-gray-500 focus:ring-0 sm:text-sm sm:leading-6`}
+                      placeholder="0:00"
+                      onChange={handleContentStart}
+                      value={contentStart}
+                    />
+                  </div>
+                  {errorContentStart ? (
+                    <p
+                      className={`${theme.errorText} ${theme.contentBackgroundColor} inline-block p-2`}
+                    >
+                      Error format 0:00
+                    </p>
                   ) : (
                     <p></p>
                   )}
