@@ -50,7 +50,7 @@ function App() {
   const [errorTalentStart, setErrorTalentStart] = useState(false);
   const [errorReactorStart, setErrorReactorStart] = useState(false);
   const [errorContentStart, setErrorContentStart] = useState(false);
-  const [contentStart, setContentStart] = useState('');
+  const [contentStart, setContentStart] = useState('0:00');
   const [isContentReady, setIsContentReady] = useState(false);
   const [frame, setFrame] = useState(false);
 
